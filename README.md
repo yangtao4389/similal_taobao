@@ -10,7 +10,7 @@ db_tools   （数据库相关）   **直接运行里面的py文件，就可以�
 
 #### apps
 users  用户  #model中 settings.py中重写了 AUTH_USER_MODEL = 'users.UserProfile' 该Model UserProfile  必须要继承from django.contrib.auth.models import AbstractUser
-goods  商品   
+goods  商品  #model中的分类用了三级联动结构，用了关联自己的一个字段--parent_category
 trade 交易  
 user_operation  用户操作  
 #### extra_apps 
