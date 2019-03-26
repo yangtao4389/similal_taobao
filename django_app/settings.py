@@ -10,9 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
-
-
-
 import os
 import configparser
 from common.iniphaser import IniPhaser
@@ -29,9 +26,10 @@ cf_dict = cf.as_dict()
 
 # 先将apps,extra_apps 加入到系统路径
 import sys
-sys.path.insert(0,BASE_DIR)
-sys.path.insert(0,os.path.join(BASE_DIR, 'apps'))
-sys.path.insert(0,os.path.join(BASE_DIR, 'extra_apps'))
+
+sys.path.insert(0, BASE_DIR)
+sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
+sys.path.insert(0, os.path.join(BASE_DIR, 'extra_apps'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
@@ -46,7 +44,6 @@ else:
     DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
-
 
 # Application definition
 
@@ -80,19 +77,20 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'django_app.urls'
 
-
 WSGI_APPLICATION = 'django_app.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
-     'default': cf_dict['DATABASE'],
+    # 'default': cf_dict['DATABASE'],
+
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'default_django.sqlite3'),
+    }
     # 'activity':cf_dict["DATABASE_ACTIVITY"],
 }
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -112,7 +110,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 LANGUAGE_CODE = 'zh-hans'
@@ -127,7 +124,6 @@ USE_TZ = False
 # 日期格式设置
 DATE_FORMAT = 'Y-m-d'
 DATETIME_FORMAT = 'Y-m-d H:i:s'
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
@@ -186,7 +182,7 @@ LOGGING = {
             'formatter': 'verbose',
             'maxBytes': 1024 * 1024 * 100,  # 文件大小 5*1024*1024 bytes (5MB)
             'backupCount': 1,
-            'filename': os.path.join(LOG_DIR, "%s.log"%PRODUCT_KEY),
+            'filename': os.path.join(LOG_DIR, "%s.log" % PRODUCT_KEY),
         },
     },
     'loggers': {
@@ -207,7 +203,6 @@ LOGGING = {
 # 设置admin上传配置
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-
 
 # 设置session
 # 配置session,如果用root需要先本地运行一下，然后将session权限设置开，这样才可以用
@@ -233,7 +228,6 @@ CACHES = {
     }
 }
 
-
 # 不用验证信息的url
 SERVICE_FILTER_URLS = [
     (r'^/admin/*'),
@@ -242,9 +236,6 @@ SERVICE_FILTER_URLS = [
     (r'%s*' % MEDIA_URL),
     (r'/favicon.ico'),
 ]
-
-
-
 
 # Celery settings
 CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
@@ -256,6 +247,6 @@ CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
 # CELERY_TASK_SERIALIZER = 'json'
 
 
-#重载系统的用户，让UserProfile生效
+# 重载系统的用户，让UserProfile生效
 AUTH_USER_MODEL = 'users.UserProfile'  # 这个生效必须继承auth_user表，即from django.contrib.auth.models import AbstractUser  class UserProfile(AbstractUser):
 # 并且该表也被xadmin继承。所以如果要重写该表，必须放在xadmin表导入之前
