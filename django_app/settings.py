@@ -10,6 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
+
+
+
 import os
 import configparser
 from common.iniphaser import IniPhaser
@@ -24,6 +27,11 @@ cf = IniPhaser()
 cf.read(config_file_path, encoding='utf8')
 cf_dict = cf.as_dict()
 
+# 先将apps,extra_apps 加入到系统路径
+import sys
+sys.path.insert(0,BASE_DIR)
+sys.path.insert(0,os.path.join(BASE_DIR, 'apps'))
+sys.path.insert(0,os.path.join(BASE_DIR, 'extra_apps'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
@@ -49,6 +57,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'users',
+    'goods',
+    'trade',
+    'user_operation',
+    'xadmin',
+    'crispy_forms',
+    'reversion',
+    'DjangoUeditor',
 ]
 
 MIDDLEWARE = [
@@ -240,3 +256,6 @@ CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
 # CELERY_TASK_SERIALIZER = 'json'
 
 
+#重载系统的用户，让UserProfile生效
+AUTH_USER_MODEL = 'users.UserProfile'  # 这个生效必须继承auth_user表，即from django.contrib.auth.models import AbstractUser  class UserProfile(AbstractUser):
+# 并且该表也被xadmin继承。所以如果要重写该表，必须放在xadmin表导入之前

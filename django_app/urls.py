@@ -18,10 +18,11 @@ from django.urls import path,include
 from django.conf.urls import url
 from django_app.settings import MEDIA_ROOT
 from django.conf.urls.static import static
+import xadmin
+from django.urls import path,include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-
-    # url(r"^hall/", include('hall.urls')),
+    path('xadmin/', xadmin.site.urls),
+    path('ueditor/', include('DjangoUeditor.urls')),  #extra_apps/DjangoUeditor
 ]
 urlpatterns += static('/media/', document_root=MEDIA_ROOT)
