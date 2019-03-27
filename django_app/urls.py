@@ -18,7 +18,7 @@ from django.urls import path,include
 from django.conf.urls import url
 from django_app.settings import MEDIA_ROOT
 from django.conf.urls.static import static
-import xadmin
+from extra_apps import xadmin
 from django.urls import path,include
 
 urlpatterns = [
@@ -26,3 +26,31 @@ urlpatterns = [
     path('ueditor/', include('DjangoUeditor.urls')),  #extra_apps/DjangoUeditor
 ]
 urlpatterns += static('/media/', document_root=MEDIA_ROOT)
+
+from extra_apps.rest_framework.documentation import include_docs_urls
+
+urlpatterns += [
+    #drf文档，title自定义
+    path('docs',include_docs_urls(title='api文档')),
+    path('api-auth/',include('rest_framework.urls')),
+]
+
+
+from goods.views import GoodsListViewSet,CategoryViewSet
+from rest_framework.routers import DefaultRouter
+#
+router = DefaultRouter()
+
+#配置goods的url
+router.register(r'goods', GoodsListViewSet)
+# 配置Category的url
+router.register(r'categorys', CategoryViewSet, base_name="categorys")
+# 版本控制 http://127.0.0.1:8000/api/v1/
+apiversion_urls = [
+    path('v1/', include(router.urls)),
+]
+
+urlpatterns += [
+    #商品列表页
+    url('^api/', include(apiversion_urls)),
+]
