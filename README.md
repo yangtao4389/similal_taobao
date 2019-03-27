@@ -50,7 +50,11 @@ filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFi
 search_fields = ('=name', 'goods_brief')
 ordering_fields = ('sold_num', 'shop_price')
 
-11. 
+11. 解决跨域问题。
+当前面api接口写好，能有数据时，前端浏览器报错-跨域问题  
+[解决方法](https://stackoverflow.com/questions/22476273/no-access-control-allow-origin-header-is-present-on-the-requested-resource-i)
+
+
 
 
 

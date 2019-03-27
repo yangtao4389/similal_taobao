@@ -65,9 +65,11 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'django_filters',
+    'coreschema',  # 跨域应用，依赖模块： django-cors-headers
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # 跨域中间件
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -78,6 +80,7 @@ MIDDLEWARE = [
 
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True # 跨域开启
 ROOT_URLCONF = 'django_app.urls'
 
 WSGI_APPLICATION = 'django_app.wsgi.application'
