@@ -18,7 +18,7 @@ from django.urls import path,include
 from django.conf.urls import url
 from django_app.settings import MEDIA_ROOT
 from django.conf.urls.static import static
-from extra_apps import xadmin
+import xadmin
 from django.urls import path,include
 
 urlpatterns = [
@@ -27,7 +27,7 @@ urlpatterns = [
 ]
 urlpatterns += static('/media/', document_root=MEDIA_ROOT)
 
-from extra_apps.rest_framework.documentation import include_docs_urls
+from rest_framework.documentation import include_docs_urls
 
 urlpatterns += [
     #drf文档，title自定义
@@ -38,16 +38,27 @@ urlpatterns += [
 
 from goods.views import GoodsListViewSet,CategoryViewSet
 from rest_framework.routers import DefaultRouter
-#
+
+from rest_framework_jwt.views import obtain_jwt_token
+others = [
+    path('login/', obtain_jwt_token),# 后台登录接口，登录成功返回token。每次请求，请求头自带token？
+]
 router = DefaultRouter()
 
 #配置goods的url
 router.register(r'goods', GoodsListViewSet)
 # 配置Category的url
 router.register(r'categorys', CategoryViewSet, base_name="categorys")
+from users.views import SmsCodeViewset,UserViewset
+
+# 配置codes的url
+router.register(r'code', SmsCodeViewset, base_name="code")
+router.register(r'users', UserViewset, base_name="users")
+others.extend(router.urls)
+
 # 版本控制 http://127.0.0.1:8000/api/v1/
 apiversion_urls = [
-    path('v1/', include(router.urls)),
+    path('v1/', include(others)),
 ]
 
 urlpatterns += [

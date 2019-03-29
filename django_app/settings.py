@@ -17,7 +17,7 @@ from common.iniphaser import IniPhaser
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WORK_PATH = os.path.abspath(os.path.dirname(__file__))  # 跟settings.py同层路径  sichuan_dx_game/sichuan_dx_game/
-PRODUCT_KEY = "pinche"  # 配置不同的项目日志等使用参考
+PRODUCT_KEY = "similar_taobao"  # 配置不同的项目日志等使用参考
 
 config_file_path = os.path.join(WORK_PATH, "settings.ini")  # todo
 cf = IniPhaser()
@@ -54,16 +54,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users',  # 注意，这里怎么注册的，到时就怎么去引用。 from users.models import  而不是 from apps.users.models import
-    'goods',
-    'trade',
-    'user_operation',
-    'xadmin',
+    'apps.users',  # 注意，这里怎么注册的，到时就怎么去引用。 from users.models import  而不是 from apps.users.models import
+    'apps.goods',
+    'apps.trade',
+    'apps.user_operation',
+    'extra_apps.xadmin',
     'crispy_forms',
     'reversion',
-    'DjangoUeditor',
+    'extra_apps.DjangoUeditor',
 
-    'rest_framework',
+    'extra_apps.rest_framework',
     'django_filters',
     'coreschema',  # 跨域应用，依赖模块： django-cors-headers
 ]
@@ -256,3 +256,21 @@ CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
 # 重载系统的用户，让UserProfile生效
 AUTH_USER_MODEL = 'users.UserProfile'  # 这个生效必须继承auth_user表，即from django.contrib.auth.models import AbstractUser  class UserProfile(AbstractUser):
 # 并且该表也被xadmin继承。所以如果要重写该表，必须放在xadmin表导入之前
+
+# drf配置，配置包括权限验证
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    )
+}
+AUTHENTICATION_BACKENDS = (
+    'apps.users.views.CustomBackend',
+)
+import datetime
+#有效期限
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=5),    #也可以设置seconds=20
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',                       #JWT跟前端保持一致，比如“token”这里设置成JWT
+}

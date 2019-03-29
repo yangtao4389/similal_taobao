@@ -54,10 +54,27 @@ ordering_fields = ('sold_num', 'shop_price')
 当前面api接口写好，能有数据时，前端浏览器报错-跨域问题  
 [解决方法](https://stackoverflow.com/questions/22476273/no-access-control-allow-origin-header-is-present-on-the-requested-resource-i)
 
+12. [实现用户登录与注册](https://www.cnblogs.com/derek1184405959/p/8813641.html)
++ 排除drf自带的token验证 因为：token永久有效，没有过期时间。保存在数据库中
++ djangorestframework-jwt 模块来实现自定义user
+AUTHENTICATION_BACKENDS = (
+    'users.views.CustomBackend',
+)
+这样通过url中的post来实现
+from rest_framework_jwt.views import obtain_jwt_token
+others = [
+    path('login/', obtain_jwt_token),# 后台登录接口，登录成功返回token。每次请求，请求头自带token？
+]
+会返回token，但是我不太清除token这里怎么控制，后端怎么描述？
 
-
-
-
+13. 实现短信发送
+云智信短信模板文件：apps/utils/yunzhixin_sms.py
+通过drf实现发送短信验证码接口
+users/serializers.py
+settings.py 配置
+手机号码正则表达式
+REGEX_MOBILE = "^1[358]\d{9}$|^147\d{8}$|^176\d{8}$"
+    
 
 #### 架构设计
 extra_apps   （扩展的源码包）  
