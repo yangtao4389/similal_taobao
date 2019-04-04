@@ -22,6 +22,7 @@ import xadmin
 from django.urls import path,include
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
     path('xadmin/', xadmin.site.urls),
     path('ueditor/', include('DjangoUeditor.urls')),  #extra_apps/DjangoUeditor
 ]

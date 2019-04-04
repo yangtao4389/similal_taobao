@@ -24,9 +24,9 @@ class GoodsListViewSet(mixins.ListModelMixin,viewsets.GenericViewSet):
     '商品列表页'
 
     # 认证试一下
-    from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-    from rest_framework.permissions import IsAuthenticated
-    authentication_classes = (SessionAuthentication, BasicAuthentication)
+    # from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+    # from rest_framework.permissions import IsAuthenticated
+    # authentication_classes = (SessionAuthentication, BasicAuthentication)
     # permission_classes = (IsAuthenticated,)
 
     # def initialize_request(self, request, *args, **kwargs):

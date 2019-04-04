@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'coreschema',  # 跨域应用，依赖模块： django-cors-headers
+
 ]
 
 MIDDLEWARE = [
@@ -265,11 +266,11 @@ AUTH_USER_MODEL = 'users.UserProfile'  # 这个生效必须继承auth_user表，
 #         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
 #     )
 # }
-AUTHENTICATION_BACKENDS = (
-    'users.views.CustomBackend',
-)
-import datetime
-#有效期限
+# AUTHENTICATION_BACKENDS = (
+#     'users.views.CustomBackend',
+# )
+# import datetime
+# #有效期限
 # JWT_AUTH = {
 #     'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=5),    #也可以设置seconds=20
 #     'JWT_AUTH_HEADER_PREFIX': 'JWT',                       #JWT跟前端保持一致，比如“token”这里设置成JWT
