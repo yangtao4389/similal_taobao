@@ -23,6 +23,18 @@ class GoodsPagination(PageNumberPagination):
 class GoodsListViewSet(mixins.ListModelMixin,viewsets.GenericViewSet):
     '商品列表页'
 
+    # 认证试一下
+    from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+    from rest_framework.permissions import IsAuthenticated
+    authentication_classes = (SessionAuthentication, BasicAuthentication)
+    # permission_classes = (IsAuthenticated,)
+
+    # def initialize_request(self, request, *args, **kwargs):
+        # super().initialize_request(request, *args, **kwargs)
+        # super(GoodsListViewSet, self).initialize_request(request, *args, **kwargs)
+        # print(request.user)  #AnonymousUser
+
+
     # 分页
     pagination_class = GoodsPagination
     #这里必须要定义一个默认的排序,否则会报错

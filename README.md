@@ -3,7 +3,7 @@
 
 ###项目创建逻辑
 1. 先创建基本配置，可以拷贝[默认django配置](https://github.com/yangtao4389/default_django2.0)
-2. 创建apps，将apps里面的用户，商品等加入后把model写好。注意这里的users，因为继承了django中默认的用户表结构，所以需要将settings.py中也要写入AUTH_USER_MODEL = 'users.UserProfile' 。否则会报错
+2. 创建apps，将apps里面的用户，商品等加入后把model写好。注意这里的users，因为继承了django中默认的用户表from django.contrib.auth.models import AbstractUser结构，所以需要将settings.py中也要写入AUTH_USER_MODEL = 'users.UserProfile' 。否则会报错
 3. 可以直接运行，生成相关表了
 4. extra_apps中，拷贝xadmin以及DjangoUeditor源码，xadmin做了相应配置。并且xadmin的表依赖于django中的user。
 5. 生成xadmin相关的表，并且在apps里面所有模块配置好adminx文件。创建superuser用户，可以去后台查看相应数据了。

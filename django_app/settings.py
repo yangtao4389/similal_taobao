@@ -54,16 +54,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.users',  # 注意，这里怎么注册的，到时就怎么去引用。 from users.models import  而不是 from apps.users.models import
-    'apps.goods',
-    'apps.trade',
-    'apps.user_operation',
-    'extra_apps.xadmin',
+    'users',  # 注意，这里怎么注册的，到时就怎么去引用。 from users.models import  而不是 from apps.users.models import
+    'goods',
+    'trade',
+    'user_operation',
+    'xadmin',
     'crispy_forms',
     'reversion',
-    'extra_apps.DjangoUeditor',
+    'DjangoUeditor',
 
-    'extra_apps.rest_framework',
+    'rest_framework',
     'django_filters',
     'coreschema',  # 跨域应用，依赖模块： django-cors-headers
 ]
@@ -257,20 +257,20 @@ CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
 AUTH_USER_MODEL = 'users.UserProfile'  # 这个生效必须继承auth_user表，即from django.contrib.auth.models import AbstractUser  class UserProfile(AbstractUser):
 # 并且该表也被xadmin继承。所以如果要重写该表，必须放在xadmin表导入之前
 
-# drf配置，配置包括权限验证
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-    )
-}
+# drf配置，配置包括权限验证 这个是全局验证，感觉是有点不需要。因为只需要验证关于用户的就好，商品类的不用
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework.authentication.BasicAuthentication',
+#         'rest_framework.authentication.SessionAuthentication',
+#         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+#     )
+# }
 AUTHENTICATION_BACKENDS = (
-    'apps.users.views.CustomBackend',
+    'users.views.CustomBackend',
 )
 import datetime
 #有效期限
-JWT_AUTH = {
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=5),    #也可以设置seconds=20
-    'JWT_AUTH_HEADER_PREFIX': 'JWT',                       #JWT跟前端保持一致，比如“token”这里设置成JWT
-}
+# JWT_AUTH = {
+#     'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=5),    #也可以设置seconds=20
+#     'JWT_AUTH_HEADER_PREFIX': 'JWT',                       #JWT跟前端保持一致，比如“token”这里设置成JWT
+# }
